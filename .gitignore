@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# Gitの管理下から外す拡張子
+*.suo
+*.cso
+Log.txt
+puzzleGame/.vs/puzzleGame/v15/Browse.VC.opendb
