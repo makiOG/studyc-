@@ -15,27 +15,30 @@ int main()
 		player = 1,
 		circle = 2,
 		dot = 3,
+		space = 4,
 	};
 
 	const char* _brockLetter = "#";
 	const char* _playerLetter = "p";
 	const char* _circleLetter = "o";
 	const char* _dotLetter = ".";
+	const char* _spaceLetter = " ";
 
 	const std::unordered_map<int, const char*> _letterConverter{
 		{brock,_brockLetter},
 		{player,_playerLetter},
 		{circle,_circleLetter},
 		{dot,_dotLetter},
+	{space,_spaceLetter},
 	};
 
 	
 
 	int stage[5][8] = { 
 	{ 0,0,0,0,0,0,0,0 },
-	{ 0,0,3,3,0,1,0,0 },
-	{ 0,0,2,2,0,0,0,0 },
-	{ 0,0,0,0,0,0,0,0 },
+	{ 0,4,3,3,4,1,4,0 },
+	{ 0,4,2,2,4,4,4,0 },
+	{ 0,4,4,4,4,4,4,0 },
 	{ 0,0,0,0,0,0,0,0 }
 	};
 
@@ -43,6 +46,7 @@ int main()
 		for (int j = 0; j < 8; j++) {
 			std::cout << _letterConverter.at(stage[i][j]);
 		}
+		std::cout << std::endl;
 	}
 
 	if (stage[1][1])
