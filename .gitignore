@@ -10,3 +10,4 @@ Release/
 *.exe
 *.db
 *.suo
+*.user
