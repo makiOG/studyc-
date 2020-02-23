@@ -1,0 +1,12 @@
+Debug/
+Release/
+.vs/
+
+*.lastbuildstate
+*.tlog
+*.log
+*.pdb
+*.ilk
+*.exe
+*.db
+*.suo
