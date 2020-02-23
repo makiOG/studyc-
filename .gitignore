@@ -17,3 +17,8 @@ puzzleGame/puzzleGame/Debug/puzzleGame.tlog/puzzleGame.lastbuildstate
 puzzleGame/puzzleGame/Debug/vc141.idb
 puzzleGame/puzzleGame/Debug/vc141.pdb
 puzzleGame/puzzleGame/puzzleGame.vcxproj
+*.db
+*.exe
+*.ilk
+*.pdb
+*.obj
