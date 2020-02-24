@@ -1,6 +1,172 @@
 #include <iostream>
 #include<unordered_map>
 #include<string>
+#include<vector>
+#include <algorithm>
+
+enum num
+{
+	brock = 0,
+	//player = 1,
+	//target = 2,
+	point = 3,
+	space = 4,
+};
+
+struct Vector2
+{
+	int x;
+	int y;
+
+	
+
+	/*
+	int clamp(int min,int max,int target)
+	{
+
+	}
+	*/
+};
+
+
+
+const char* _brockLetter = "#";
+const char* _playerLetter = "p";
+const char* _targetLetter = "o";
+const char* _pointLetter = ".";
+const char* _spaceLetter = " ";
+
+const int _stageSizeX = 8;
+const int _stageSizeY = 5;
+
+Vector2 _playerPos{ 5,1 };
+std::vector<Vector2> _targetPosList{
+	{2,2},
+{3,2}
+};
+
+const std::unordered_map<int, const char*> _letterConverter{
+		{brock,_brockLetter},
+		//{target,_targetLetter},
+		{point,_pointLetter},
+	{space,_spaceLetter},
+};
+
+int stage[_stageSizeY][_stageSizeX] = {
+	{ 0,0,0,0,0,0,0,0 },
+	{ 0,4,3,3,4,4,4,0 },
+	{ 0,4,4,4,4,4,4,0 },
+	{ 0,4,4,4,4,4,4,0 },
+	{ 0,0,0,0,0,0,0,0 }
+};
+
+void Init()
+{
+}
+
+void endl()
+{
+	std::cout << std::endl;
+}
+
+void Update()
+{
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 8; j++) {
+			//プレイヤーの座標と一致したら
+			if (_playerPos.x == j && _playerPos.y == i)
+			{
+				std::cout << _playerLetter;
+				continue;
+			}
+			for (const auto& at : _targetPosList) {
+				if (at.x == j && at.y == i)
+				{
+					std::cout << _targetLetter;
+					continue;
+				}
+			}
+			std::cout << _letterConverter.at(stage[i][j]);
+		}
+		std::cout << std::endl;
+	}
+
+	
+
+	//char playerMove;
+
+	std::string playerMove;
+	std::cin >> playerMove;
+
+	
+	//範囲外参照対策
+	//サボってるコード brockの数字(0)を参照して壁に入らない判定を入れてるわけじゃなくて、
+	//壁の分を含めた領域の外に出ないようにしている。
+	//壁の定義が変わればアウトなので、コード的にはよくないから適当コード
+
+	if (!strcmp(playerMove.c_str(), "w") && _playerPos.y - 2 >= 0)
+	{
+		for (auto& at : _targetPosList) {
+			if (_playerPos.x == at.x && _playerPos.y - 1 == at.y && stage[_playerPos.y - 2][_playerPos.x] == space)
+			{
+				at.y--;
+			}
+			else if (_playerPos.x == at.x && _playerPos.y - 1 == at.y && stage[_playerPos.y - 2][_playerPos.x] == point)
+			{
+				at.y--;
+			}
+		}
+
+		
+
+		//二次元配列上のfor文では左上からカウントを始めているため、y座標の正と負の方向が逆になっている。
+		_playerPos.y--;
+	}
+	else if (!strcmp(playerMove.c_str(), "a") && _playerPos.x - 2 >= 0)
+	{
+		if (stage[_playerPos.y][_playerPos.x - 1] == target && stage[_playerPos.y][_playerPos.x - 2] == space)
+		{
+			stage[_playerPos.y][_playerPos.x - 2] = target;
+			//stage[_playerPos.y][_playerPos.x - 1] = space;
+		}
+		else if (stage[_playerPos.y][_playerPos.x - 1] == target && stage[_playerPos.y][_playerPos.x - 2] == point)
+		{
+			stage[_playerPos.y][_playerPos.x - 2] = target;
+		}
+		_playerPos.x--;
+	}
+	else if (!strcmp(playerMove.c_str(), "s") && _playerPos.y + 2 < _stageSizeY)
+	{
+		if (stage[_playerPos.y + 1][_playerPos.x] == target && stage[_playerPos.y + 2][_playerPos.x] == space)
+		{
+			stage[_playerPos.y + 2][_playerPos.x] = target;
+			//stage[_playerPos.y + 1][_playerPos.x] = space;
+		}
+		else if (stage[_playerPos.y + 1][_playerPos.x] == target && stage[_playerPos.y + 2][_playerPos.x] == point)
+		{
+			stage[_playerPos.y + 2][_playerPos.x] = target;
+		}
+		//二次元配列上のfor文では左上からカウントを始めているため、y座標の正と負の方向が逆になっている。
+		_playerPos.y++;
+	}
+	else if (!strcmp(playerMove.c_str(), "d") && _playerPos.x + 2 < _stageSizeX)
+	{
+		if (stage[_playerPos.y][_playerPos.x + 1] == target && stage[_playerPos.y][_playerPos.x + 2] == space)
+		{
+			stage[_playerPos.y][_playerPos.x + 2] = target;
+			//stage[_playerPos.y][_playerPos.x + 1] = space;
+		}
+		else if (stage[_playerPos.y][_playerPos.x + 1] == target && stage[_playerPos.y][_playerPos.x + 2] == point)
+		{
+			stage[_playerPos.y][_playerPos.x + 2] = target;
+		}
+		_playerPos.x++;
+	}
+
+
+	endl();
+	
+}
 
 int main()
 {
@@ -9,60 +175,12 @@ int main()
 	//const int circle = 2;
 	//const int dot = 3;
 
-	enum num
+	Init();
+
+	while (true)
 	{
-		brock = 0,
-		player = 1,
-		circle = 2,
-		dot = 3,
-		space = 4,
-	};
-
-	const char* _brockLetter = "#";
-	const char* _playerLetter = "p";
-	const char* _circleLetter = "o";
-	const char* _dotLetter = ".";
-	const char* _spaceLetter = " ";
-
-	const std::unordered_map<int, const char*> _letterConverter{
-		{brock,_brockLetter},
-		{player,_playerLetter},
-		{circle,_circleLetter},
-		{dot,_dotLetter},
-	{space,_spaceLetter},
-	};
-
-	
-
-	int stage[5][8] = { 
-	{ 0,0,0,0,0,0,0,0 },
-	{ 0,4,3,3,4,1,4,0 },
-	{ 0,4,2,2,4,4,4,0 },
-	{ 0,4,4,4,4,4,4,0 },
-	{ 0,0,0,0,0,0,0,0 }
-	};
-
-	for (int i = 0; i < 5; i++) {
-		for (int j = 0; j < 8; j++) {
-			std::cout << _letterConverter.at(stage[i][j]);
-		}
-		std::cout << std::endl;
+		Update();
 	}
-
-	if (stage[1][1])
-	{
-		int i = 1;
-	}
-
-	auto a = "########";
-	auto b = "# .. p #";
-	auto c = "# oo   #";
-	auto d = "#      #";
- 	auto e = "########";
-	//std::cout << a << std::endl << b << std::endl << c << std::endl << d << std::endl << e << std::endl;
-
-	char aa;
-	std::cin >> aa;
 	return 0;
 
 }
