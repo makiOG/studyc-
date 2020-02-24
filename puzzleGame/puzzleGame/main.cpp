@@ -79,12 +79,18 @@ void Update()
 				std::cout << _playerLetter;
 				continue;
 			}
+			bool breakFlag = false;
 			for (const auto& at : _targetPosList) {
 				if (at.x == j && at.y == i)
 				{
 					std::cout << _targetLetter;
-					continue;
+					breakFlag = true;
+					break;
 				}
+			}
+			if (breakFlag == true)
+			{
+				continue;
 			}
 			std::cout << _letterConverter.at(stage[i][j]);
 		}
@@ -124,41 +130,44 @@ void Update()
 	}
 	else if (!strcmp(playerMove.c_str(), "a") && _playerPos.x - 2 >= 0)
 	{
-		if (stage[_playerPos.y][_playerPos.x - 1] == target && stage[_playerPos.y][_playerPos.x - 2] == space)
-		{
-			stage[_playerPos.y][_playerPos.x - 2] = target;
-			//stage[_playerPos.y][_playerPos.x - 1] = space;
-		}
-		else if (stage[_playerPos.y][_playerPos.x - 1] == target && stage[_playerPos.y][_playerPos.x - 2] == point)
-		{
-			stage[_playerPos.y][_playerPos.x - 2] = target;
+		for (auto& at : _targetPosList) {
+			if (_playerPos.x - 1 == at.x && _playerPos.y == at.y && stage[_playerPos.y][_playerPos.x - 2] == space)
+			{
+				at.x--;
+			}
+			else if (_playerPos.x - 1 == at.x && _playerPos.y == at.y && stage[_playerPos.y][_playerPos.x - 2] == space)
+			{
+				at.x--;
+			}
 		}
 		_playerPos.x--;
 	}
 	else if (!strcmp(playerMove.c_str(), "s") && _playerPos.y + 2 < _stageSizeY)
 	{
-		if (stage[_playerPos.y + 1][_playerPos.x] == target && stage[_playerPos.y + 2][_playerPos.x] == space)
-		{
-			stage[_playerPos.y + 2][_playerPos.x] = target;
-			//stage[_playerPos.y + 1][_playerPos.x] = space;
-		}
-		else if (stage[_playerPos.y + 1][_playerPos.x] == target && stage[_playerPos.y + 2][_playerPos.x] == point)
-		{
-			stage[_playerPos.y + 2][_playerPos.x] = target;
+		for (auto& at : _targetPosList) {
+			if (_playerPos.x == at.x && _playerPos.y + 1 == at.y && stage[_playerPos.y + 2][_playerPos.x] == space)
+			{
+				at.y++;
+			}
+			else if (_playerPos.x == at.x && _playerPos.y + 1 == at.y && stage[_playerPos.y + 2][_playerPos.x] == point)
+			{
+				at.y++;
+			}
 		}
 		//二次元配列上のfor文では左上からカウントを始めているため、y座標の正と負の方向が逆になっている。
 		_playerPos.y++;
 	}
 	else if (!strcmp(playerMove.c_str(), "d") && _playerPos.x + 2 < _stageSizeX)
 	{
-		if (stage[_playerPos.y][_playerPos.x + 1] == target && stage[_playerPos.y][_playerPos.x + 2] == space)
-		{
-			stage[_playerPos.y][_playerPos.x + 2] = target;
-			//stage[_playerPos.y][_playerPos.x + 1] = space;
-		}
-		else if (stage[_playerPos.y][_playerPos.x + 1] == target && stage[_playerPos.y][_playerPos.x + 2] == point)
-		{
-			stage[_playerPos.y][_playerPos.x + 2] = target;
+		for (auto& at : _targetPosList) {
+			if (_playerPos.x + 1 == at.x && _playerPos.y == at.y && stage[_playerPos.y][_playerPos.x + 2] == space)
+			{
+				at.x++;
+			}
+			else if (_playerPos.x + 1 == at.x && _playerPos.y == at.y && stage[_playerPos.y][_playerPos.x + 2] == space)
+			{
+				at.x++;
+			}
 		}
 		_playerPos.x++;
 	}
